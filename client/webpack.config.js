@@ -12,12 +12,13 @@ module.exports = () => {
     },
     output: {
       filename: '[name].bundle.js',
-      path: path.resolve(__dirname, 'dist'),
+      path: path.resolve(__dirname, 'client', 'dist'),
     },
     plugins: [
       new HtmlWebpackPlugin({
         filename: 'index.html',
-        template: 'src/index.html',
+        template: 'index.html',
+        inject: true,
       }),
       new WebpackPwaManifest({
         name: 'My Text Editor App',
@@ -35,7 +36,7 @@ module.exports = () => {
         }],
       }),
       new InjectManifest({
-        swSrc: './src/src-sw.js',
+        swSrc: './src-sw.js',
       }),
     ],
     module: {
