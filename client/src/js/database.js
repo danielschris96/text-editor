@@ -14,7 +14,6 @@ const initdb = async () =>
 
 // TODO: Add logic to a method that accepts some content and adds it to the database
 export const putDb = async (content) => {
-  console.log('Adding content to the database:', content);
 
   // Create a connection to the database and specify the desired database and data privileges.
   const db = await openDB('jate', 1);
