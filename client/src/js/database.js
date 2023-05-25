@@ -16,23 +16,21 @@ const initdb = async () =>
     const db = await openDB('jate', 1);
     const tx = db.transaction('jate', 'readwrite');
     const store = tx.objectStore('jate');
-    // Store content inside an object
-    const request = store.add({ id: 'content', value: content });
-    await request;
+    // Add timestamp to the data
+    const data = { content, timestamp: new Date() };
+    await store.put(data);
     console.log('Content added to the database.');
   };
   
   export const getDb = async () => {
-    console.log('GET from the database');
     const db = await openDB('jate', 1);
     const tx = db.transaction('jate', 'readonly');
     const store = tx.objectStore('jate');
-    // Get the stored object
-    const request = store.get('content');
-    const result = await request;
-    console.log('result.value', result?.value);
-    // Return the content string, not the whole object
-    return result?.value || null;
+    // Get all records, sorted by timestamp
+    const allRecords = await store.getAll();
+    allRecords.sort((a, b) => b.timestamp - a.timestamp);
+    // Return the content of the most recent record, or undefined if there are no records
+    return allRecords.length > 0 ? allRecords[0].content : undefined;
   };
 
 initdb();
