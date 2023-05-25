@@ -25,9 +25,13 @@ export const putDb = async (content) => {
   // Open up the desired object store.
   const store = tx.objectStore('jate');
 
+  // Wrap content in an object before adding it to the object store.
+  const objectToAdd = { content };
+  
   // Add the content to the object store.
-  const request = store.add(content);
+  const request = store.add(objectToAdd);
 
+  // Wait for the transaction to complete.
   await tx.done;
 
   // Get confirmation of the request.
@@ -41,22 +45,23 @@ export const putDb = async (content) => {
 export const getDb = async () => {
   console.log('GET from the database');
 
-  // Create a connection to the database database and version we want to use.
-  const contactDb = await openDB('jate', 1);
+  // Create a connection to the database and specify the desired database and version we want to use.
+  const db = await openDB('jate', 1);
 
   // Create a new transaction and specify the database and data privileges.
-  const tx = contactDb.transaction('jate', 'readonly');
+  const tx = db.transaction('jate', 'readonly');
 
   // Open up the desired object store.
   const store = tx.objectStore('jate');
 
   // Use the .getAll() method to get all data in the database.
-  const request = store.getAll();
+  const results = await store.getAll();
 
-  // Get confirmation of the request.
-  const result = await request;
-  console.log('result.value', result);
-  return result;
+  // Extract the latest content from the results.
+  const latestContent = results.length ? results[results.length - 1].content : null;
+  
+  console.log('Latest content from database:', latestContent);
+  return latestContent;
 };
 
 initdb();
