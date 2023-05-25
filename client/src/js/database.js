@@ -12,47 +12,27 @@ const initdb = async () =>
     },
   });
 
-// TODO: Add logic to a method that accepts some content and adds it to the database
-export const putDb = async (content) => {
-
-  // Create a connection to the database and specify the desired database and data privileges.
-  const db = await openDB('jate', 1);
-
-  // Create a new transaction and specify the database and data privileges.
-  const tx = db.transaction('jate', 'readwrite');
-
-  // Open up the desired object store.
-  const store = tx.objectStore('jate');
-
-  // Add the content to the object store.
-  const request = store.add(content);
-
-  // Get confirmation of the request.
-  await request;
-  console.log('Content added to the database.');
-};
-
-
-
-export const getDb = async () => {
-  console.log('GET from the database');
-
-  // Create a connection to the database database and version we want to use.
-  const contactDb = await openDB('jate', 1);
-
-  // Create a new transaction and specify the database and data privileges.
-  const tx = contactDb.transaction('jate', 'readonly');
-
-  // Open up the desired object store.
-  const store = tx.objectStore('jate');
-
-  // Use the .getAll() method to get all data in the database.
-  const request = store.getAll();
-
-  // Get confirmation of the request.
-  const result = await request;
-  console.log('result.value', result);
-  return result;
-};
+  export const putDb = async (content) => {
+    const db = await openDB('jate', 1);
+    const tx = db.transaction('jate', 'readwrite');
+    const store = tx.objectStore('jate');
+    // Store content inside an object
+    const request = store.add({ id: 'content', value: content });
+    await request;
+    console.log('Content added to the database.');
+  };
+  
+  export const getDb = async () => {
+    console.log('GET from the database');
+    const db = await openDB('jate', 1);
+    const tx = db.transaction('jate', 'readonly');
+    const store = tx.objectStore('jate');
+    // Get the stored object
+    const request = store.get('content');
+    const result = await request;
+    console.log('result.value', result?.value);
+    // Return the content string, not the whole object
+    return result?.value || null;
+  };
 
 initdb();
