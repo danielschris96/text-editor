@@ -22,9 +22,17 @@ To install dependencies, use the command `npm i`.
 ## Usage
 To run the application, use the command `npm start`. To use the application, type in a note title and note text and click the save icon. To delete a note, click the trash icon next to the note. To install the application, click the install button in the header.
 
+![Screenshot of JATE](./assets/images/screenshot.JPG)
+
 ## License
 
 This project is licensed under the [MIT](https://opensource.org/licenses/MIT) license.
 
 ## Credits
 
+* [Node.js](https://nodejs.org/en/)
+* [Express.js](https://expressjs.com/)
+* [Webpack](https://webpack.js.org/)
+* [Babel](https://babeljs.io/)
+* [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
+* [Heroku](https://www.heroku.com/)
